@@ -71,6 +71,49 @@ enum class Color : char { red, blue }; // 紧凑型表示(一个字节)
 [c++中四种强制类型转换](http://www.360doc.com/content/12/0403/11/9140140_200439539.shtml)
 
 [【C++专题】static_cast, dynamic_cast, const_cast探讨](http://www.cnblogs.com/chio/archive/2007/07/18/822389.html)
+
+
+# 继承构造函数与父类重载函数的提升
+在C++98标准里，可以将普通的重载函数从基类“晋级”到派生类里来解决当基类与派生类的同名成员不在同一个作用域内时,派生类找不到父类同名成员的问题：
+而在c++11中甚至连构造函数都可以这么做
+```
+class A
+{
+public:
+	A(int a):_a(a)
+	{
+		cout<<"A 的构造函数\n";
+	}
+	void print(double a)
+	{
+		cout<<"print in A\n";
+	}
+	int _a;
+}; 
+class B : public A
+{
+public:
+	using A::print;
+	using A::A;//这句话使得B有了一个B(int)的默认构造函数;而默认构造函数只有一个; 
+	void print(int a,int b)
+	{
+		cout<<"print in B\n";
+	}
+};
+
+int main()
+{
+	B b(1);
+	//B c;这句话编译不通过，因为B没有这样的默认构造函数; 
+	b.print(1.1);
+		
+	return 0;
+}
+```
+## 参考资料
+
+[【c++11FAQ】继承的构造函数](https://wizardforcel.gitbooks.io/cpp-11-faq/content/48.html)
+
 # 其它
 ##委托构造函数（Delegating constructors）
 
