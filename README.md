@@ -111,8 +111,28 @@ int main()
 }
 ```
 ## 参考资料
-
 [【c++11FAQ】继承的构造函数](https://wizardforcel.gitbooks.io/cpp-11-faq/content/48.html)
+#Lambda表达式
+
+## 构成
+为了描述一个lambda，你必须提供：
+它的捕捉列表：即（除了形参之外）它可以使用的变量列表（”[&]” 在上面的记录比较例子中意味着“所有的局部变量都将按照引用的方式进行传递”）。如果不需要捕捉任何变量，则使用 []，[=]表示值传递。
+（可选的）它的所有参数及其类型（例如： (int a, int b) ）。
+组织成一个块的函数行为（例如：{ return v[a].name < v[b].name; }）。
+（可选的）使用”返回值类型后置语法“来指明返回类型。但典型情况下，我们仅从return语句中去推断返回类型，如果没有返回任何值，则推断为void。
+
+Lambda表达式与STL算法一起使用;
+
+通过“函数体”后面的‘()’传入参数。
+
+```
+int n = [] (int x, int y) { return x + y; }(5, 4);
+
+cout << n << endl;
+```
+## 参考资料
+[Lambda表达式 | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/18.html)
+[C++11 lambda表达式 - KingsLanding ](http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438176.html)
 
 # 其它
 ##委托构造函数（Delegating constructors）
