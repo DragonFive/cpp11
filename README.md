@@ -133,6 +133,20 @@ cout << n << endl;
 ## 参考资料
 [Lambda表达式 | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/18.html)
 [C++11 lambda表达式 - KingsLanding ](http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438176.html)
+[用作模板参数的局部类型 | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/21.html)
+
+# 原生字符串标识R
+正常情况下字符串是位于R" "之间的，结束符就是"。可是字符串内部可以包含"怎么办呢？比如R"fewga"rgare"，改结束符，变成)"，这样就变成R"(fewga"rgare)"，不会混淆了。可是问题又来了，如果字符串内包含)"呢？于是又引入了d-char-sequenceopt（可以为空），估且叫它分隔串吧，变成R"--(fewga）"rgare)--"这样的形式，于是问题解决。由于分隔串是用户指定的，所以可以使用不固定的结束符，不会混淆（除非有人太二）。字符串内有)-"，我就用)#"，有)#"，我就用)**"。
+
+”(…)”分隔法只不过是默认的分隔语法罢了。通过在“(…)”的(…)前后添加显式的自定义分隔号(译注:例如下面例子中的三个星号*)，我们还可以创造出任何我们想要的分隔语法。
+```
+// 字符串为："quoted string containing the usual terminator (")"
+R"***("quoted string containing the usual terminator (")")***"
+```
+## 参考资料
+
+[原生字符串标识R | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/52.html)
+[c++原始字符串](http://www.cnblogs.com/lzxskjo/p/4896164.html)
 
 # 其它
 ##委托构造函数（Delegating constructors）
