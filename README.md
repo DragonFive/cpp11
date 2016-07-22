@@ -143,10 +143,28 @@ cout << n << endl;
 // 字符串为："quoted string containing the usual terminator (")"
 R"***("quoted string containing the usual terminator (")")***"
 ```
+
 ## 参考资料
 
 [原生字符串标识R | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/52.html)
 [c++原始字符串](http://www.cnblogs.com/lzxskjo/p/4896164.html)
+
+# 右值引用与移动构造函数
+ove(x) 意味着“你可以把x当做一个右值”。
+在C++11的标准库中，所有的容器都提供了移动构造函数和移动赋值操作符，那些插入新元素的操作，如insert()和push_back(), 也都有了可以接受右值引用的版本。最终的结果是，在没有用户干预的情况下，标准容器和算法的性能都提升了，而这些都应归功于拷贝操作的减少。
+
+左值（赋值操作符“=”的左侧，通常是一个变量）与右值（赋值操作符“=”的右侧，通常是一个常数、表达式、函数调用）
+
+
+## 参考资料
+[C++11尝鲜：右值引用和转发型引用 ](http://blog.csdn.net/zwvista/article/details/12306283#t7)
+[右值引用 | c++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/47.html)
+[cpp11 sniper](https://github.com/daniel-j-h/cpp11-snippets/blob/master/src/move.cpp)
+
+
+
+
+
 
 # 其它
 ##委托构造函数（Delegating constructors）
