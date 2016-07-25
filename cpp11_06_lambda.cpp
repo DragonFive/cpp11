@@ -2,23 +2,23 @@
   *Copyright(C),2011-2018,dragonfive
   *Author:  	dragonfive
   *Version:  	v1.0
-  *Date:  		2016Äê7ÔÂ21ÈÕ21:51:58 
-  *Description: ²âÊÔc++11µÄlambda±í´ïÊ½ 
-  *Others:  //ÆäËûÄÚÈİËµÃ÷
-  *Function List:  //Ö÷Òªº¯ÊıÁĞ±í£¬Ã¿Ìõ¼ÇÂ¼Ó¦°üº¬º¯ÊıÃû¼°¹¦ÄÜ¼òÒªËµÃ÷
-     1.¡­¡­¡­¡­
-     2.¡­¡­¡­¡­
-  *History:  //ĞŞ¸ÄÀúÊ·¼ÇÂ¼ÁĞ±í£¬Ã¿ÌõĞŞ¸Ä¼ÇÂ¼Ó¦°üº¬ĞŞ¸ÄÈÕÆÚ¡¢ĞŞ¸ÄÕß¼°ĞŞ¸ÄÄÚÈİ¼ò½é
+  *Date:  		2016å¹´7æœˆ21æ—¥21:51:58 
+  *Description: æµ‹è¯•c++11çš„lambdaè¡¨è¾¾å¼ 
+  *Others:  //å…¶ä»–å†…å®¹è¯´æ˜
+  *Function List:  //ä¸»è¦å‡½æ•°åˆ—è¡¨ï¼Œæ¯æ¡è®°å½•åº”åŒ…å«å‡½æ•°ååŠåŠŸèƒ½ç®€è¦è¯´æ˜
+     1.â€¦â€¦â€¦â€¦
+     2.â€¦â€¦â€¦â€¦
+  *History:  //ä¿®æ”¹å†å²è®°å½•åˆ—è¡¨ï¼Œæ¯æ¡ä¿®æ”¹è®°å½•åº”åŒ…å«ä¿®æ”¹æ—¥æœŸã€ä¿®æ”¹è€…åŠä¿®æ”¹å†…å®¹ç®€ä»‹
      1.Date:
        Author:
        Modification:
-     2.¡­¡­¡­¡­
+     2.â€¦â€¦â€¦â€¦
 **********************************************************************************/
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
-//Êä³öaÀïÃæµÄËùÓĞÔªËØ;ÕâÀïa¿ÉÒÔ½ÓÊÜÈÎºÎµÄĞòÁĞ»¯ÊäÈë;
+//è¾“å‡ºaé‡Œé¢çš„æ‰€æœ‰å…ƒç´ ;è¿™é‡Œaå¯ä»¥æ¥å—ä»»ä½•çš„åºåˆ—åŒ–è¾“å…¥;
 void print(auto a)
 {
 	for(auto b:a)
@@ -34,7 +34,7 @@ struct Record
 	}
 	
 };
-//generate ĞèÒªµÚÈı¸ö²ÎÊıÊä³öÒ»¸öintÖµÌîÈë,sortĞèÒªµÚÈı¸öÊä³öĞòÁĞµÄboolÖµ; 
+//generate éœ€è¦ç¬¬ä¸‰ä¸ªå‚æ•°è¾“å‡ºä¸€ä¸ªintå€¼å¡«å…¥,sortéœ€è¦ç¬¬ä¸‰ä¸ªè¾“å‡ºåºåˆ—çš„boolå€¼; 
 void f(vector<Record>& v)
 {
     vector<int> indices(v.size());
@@ -42,7 +42,7 @@ void f(vector<Record>& v)
     generate(indices.begin(),indices.end(),[&count]()
     { return count++; });
 	print(indices);
-    // ¶Ôindices°´ÕÕ¼ÇÂ¼µÄÃû×ÖÓòË³Ğò½øĞĞÅÅĞò
+    // å¯¹indicesæŒ‰ç…§è®°å½•çš„åå­—åŸŸé¡ºåºè¿›è¡Œæ’åº
     std::sort(indices.begin(), indices.end(), [&](int a, int b)
     { return v[a].name<v[b].name; });
     print(indices);
@@ -54,13 +54,13 @@ int main()
 	//usecase 1.
 	vector<int> v = {50, -10, 20, -30};
 	print(v);
-	std::sort(v.begin(), v.end());    // ÅÅĞòÊ±°´ÕÕÄ¬ÈÏ¹æÔò
-	// ´ËÊ±vÖĞµÄÊı¾İÓ¦¸ÃÊÇ { -30, -10, 20, 50 }
+	std::sort(v.begin(), v.end());    // æ’åºæ—¶æŒ‰ç…§é»˜è®¤è§„åˆ™
+	// æ­¤æ—¶vä¸­çš„æ•°æ®åº”è¯¥æ˜¯ { -30, -10, 20, 50 }
 	print(v);
-	// ÀûÓÃLambda±í´ïÊ½£¬°´ÕÕ¾ø¶ÔÖµÅÅĞò
+	// åˆ©ç”¨Lambdaè¡¨è¾¾å¼ï¼ŒæŒ‰ç…§ç»å¯¹å€¼æ’åº
 	std::sort(v.begin(), v.end(), [](int a, int b)
 	{ return abs(a)<abs(b); });
-	// ´ËÊ±vÓ¦¸ÃÊÇ { -10, 20, -30, 50 }
+	// æ­¤æ—¶våº”è¯¥æ˜¯ { -10, 20, -30, 50 }
 	print(v);
 	string hehe="heheh*";
 	print(hehe) ;
