@@ -1,4 +1,4 @@
-﻿# cpp11
+# cpp11
 标签（空格分隔）： c++
 note and test code for cpp11
 
@@ -162,9 +162,153 @@ ove(x) 意味着“你可以把x当做一个右值”。
 [cpp11 sniper](https://github.com/daniel-j-h/cpp11-snippets/blob/master/src/move.cpp)
 
 
+#用户自定义数据后缀 
+自字义后缀用operator""定义，就是一种特殊的函数。后缀名必须以下划线开头，因为没有下划线的后缀是留给std用的。后缀的参数只能是unsigned long long、long double、const char*或者const char* + size_t。没了，它就是这么简单易上手又很实用的特性。一般来说适合编为后缀的是单位，如kg，km。
+
+~~C++14预定义了一些标准的字面量，s用于创建std::string，如 "hello"s；h、min、s、ms、us、ns用于创建std::chrono::duration；i、il、if用于创建复数complex<double>、complex<long double>、complex<float>。~~
+有以下四种数据标识的情况，可以被用户定义后缀来使用用户自定义数据标识：
+
+    整型标识：允许传入一个unsigned long long或者const char*参数
+    浮点型标识：允许传入一个long double或者const char*参数
+    字符串标识：允许传入一组(const char*,size_t)参数
+    字符标识：允许传入一个char参数。
 
 
+根据 C++ 11 标准，只有下面这些签名是合法的：
 
+```
+char const*
+unsigned long long
+long double
+char const*, std::size_t
+wchar_t const*, std::size_t
+char16_t const*, std::size_t
+char32_t const*, std::size_t
+
+
+```
+上面列出的第一个签名不要同字符串相混淆，应该被称为原始字面量 raw literal 操作符。例如：
+```
+char const* operator"" _r(char const* s)
+{
+    return s;
+}
+ 
+int main()
+{
+    std::cout << 12_r << '\n';
+}
+```
+
+
+## 参考资料
+[C++11 用户自定义字面值](http://www.cnblogs.com/lzxskjo/p/5198947.html)
+
+[C++11 新特性：用户定义字面量](https://www.devbean.net/2012/05/cpp11-literals/)
+[【c++11FAQ】用户定义数据标识 ](https://wizardforcel.gitbooks.io/cpp-11-faq/content/13.html)
+
+# 随机数的产生
+
+```
+#include <random>
+#include <iostream>
+int main()
+{
+	std::default_random_engine generator;  
+	std::uniform_int_distribution<int> dis(0,100);  
+	for(int i=0;i<5;i++)  
+	{  
+	    std::cout<<dis(generator)<<std::endl;  
+	}  
+	return 0; 
+}
+```
+
+
+## 参考资料
+
+[ 【C++11】随机数函数库random](http://blog.csdn.net/akonlookie/article/details/8223525)
+
+[[C++11]C++11带来的随机数生成器](http://www.cnblogs.com/egmkang/archive/2012/09/06/2673253.html)
+[【c++11FAQ】随机数的产生](https://wizardforcel.gitbooks.io/cpp-11-faq/content/74.html)
+
+[c++一般意义上的随机数生成](http://blog.sina.com.cn/s/blog_79ab4be10100uzrj.html)
+
+# 智能指针
+## unique_ptr
+>为动态申请的内存提供异常安全
+将动态申请内存的所有权传递给某个函数(不能给复制，只能移动)
+从某个函数返回动态申请内存的所有权
+在容器中保存指针
+
+在那些要不是为了避免不安全的异常问题（以及为了保证指针所指向的对象都被正确地删除释放），我们不可以使用内建指针的情况下，我们可以在容器中保存unique_ptr以代替内建指针
+
+## shared_ptr与weak_ptr
+当 shared_ref_cnt 被减为0时，自动释放 ptr 指针所指向的对象。当 shared_ref_cnt 与 weak_ref_cnt 都变成0时，才释放 ptr_manage 对象。
+如此以来，只要有相关联的 shared_ptr 存在，对象就存在。weak_ptr 不影响对象的生命周期。当用 weak_ptr 访问对象时，对象有可能已被释放了，要先 lock()。
+
+weak_ptr可以保存一个“弱引用”，指向一个已经用shared_ptr进行管理的对象。为了访问这个对象，一个weak_ptr可以通过shared_ptr的构造函数或者是weak_ptr的成员函数lock()转化为一个shared_ptr。当最后一个指向这个对象的shared_ptr退出其生命周期并且这个对象被释放之后，将无法从指向这个对象的weak_ptr获得一个shared_ptr指针，shared_ptr的构造函数会抛出异常，而weak_ptr::lock也会返回一个空指针。
+
+## 参考资料
+[C++11中的智能指针](http://my.oschina.net/hevakelcj/blog/465978)
+[【c++11FAQ】unique_ptr](https://wizardforcel.gitbooks.io/cpp-11-faq/content/12.html)
+
+# 时间工具 chrono
+## duration 
+duration 是chrono命名空间下面的一个模板类型，它有一些实例类型如下：
+```
+typedef duration<long long, nano> nanoseconds; //纳秒
+typedef duration<long long, micro> microseconds;//微秒
+typedef duration<long long, milli> milliseconds;//毫秒
+typedef duration<long long> seconds;
+typedef duration<int, ratio<60> > minutes;
+typedef duration<int, ratio<3600> > hours;
+
+```
+我们使用的时候可以使用它的实例化类型来创建对象
+```
+secons sec{128}
+```
+当要取得一个duration实例类型的变量的值的时候，使用count成员函数
+```
+sec.count()
+```
+当想要对duration进行单位类型转换的时候，可以使用duration_cast<duration_type>进行强制类型转换;
+```
+chono::minutes min = duration_cast<chono::minutes>(sec)
+```
+
+
+## time_point
+有三种类型 steady_clock(稳定常用)
+system_clock(直接读取系统时间,可能被人手动改变)
+high_resolution_clock(精度更高，单在vc库里面就是system_clock())
+```
+std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
+std::cout << "Hello World\n";
+std::chrono::steady_clock::time_point t2 = std::chrono::steady_clock::now();
+std::cout << "Printing took "
+  << std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count()
+  << "us.\n";
+```
+
+
+## 参考资料
+
+[C++11 STL 的時間函式庫：chrono](https://kheresy.wordpress.com/2013/12/27/c-stl-chrono/)
+
+[C++11 新的计时方法——std::chrono 大法好](http://blog.csdn.net/u013390476/article/details/50209603)
+
+
+# 线程
+
+
+## 参考资料 
+
+[【c++11FAQ】互斥](https://wizardforcel.gitbooks.io/cpp-11-faq/content/35.html)
+[【c++11FAQ】std::future和std::promise](https://wizardforcel.gitbooks.io/cpp-11-faq/content/70.html)
+
+[【c++11FAQ】async()](https://wizardforcel.gitbooks.io/cpp-11-faq/content/27.html)
 
 # 其它
 ##委托构造函数（Delegating constructors）
