@@ -36,6 +36,11 @@ int main()
     
     get<1>(tup2)=16;
     cout<<intNum<<endl;
+    //tuple_cat
+    tuple<int,string> tup3 = make_pair<int,string>(18,"hello");//tuple是对pair的泛化;
+    auto tup4 = tuple_cat(tup2,tup3,tup2);
+
+
 
     return 0;
 }
