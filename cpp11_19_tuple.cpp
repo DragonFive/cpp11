@@ -9,6 +9,37 @@
 #include<tuple>
 using namespace std;
 
+//下面是tuple的遍历方法
+template<class Tuple,std::size_t N>
+struct TuplePrinter
+{
+    static void print(const Tuple&t)
+    {
+        TuplePrinter<Tuple,N-1>::print(t);//使用递归的方法,先变脸前N-1个,这里因为get<index>其中到index需要是常量,而模板在编译时可以确定;
+        cout<<", "<<get<N-1>(t);
+    }
+};
+
+template<class Tuple>
+struct TuplePrinter<Tuple,1>//当第二个参数是1时执行着一个;
+{
+    static void print(const Tuple&t)
+    {
+        cout<<get<0>(t);
+    }
+};
+
+//c++11中新支持的变长参数模型;表示不管tuple内部参数类型有多少，都可以用这个函数来进行遍历;
+template<class... Args>
+
+void printTuple(tuple<Args...>& t)
+{
+    TuplePrinter<decltype(t),sizeof ...(Args)>::print(t);
+}
+
+
+
+
 int main()
 {
     auto tup =make_tuple(string("hehe"),10,1.23);
@@ -40,7 +71,11 @@ int main()
     tuple<int,string> tup3 = make_pair<int,string>(18,"hello");//tuple是对pair的泛化;
     auto tup4 = tuple_cat(tup2,tup3,tup2);
 
-
-
+    //获得tuple中元素的个数;
+    int sizeTup4 = tuple_size<decltype(tup4)>::value;
+    cout<<"tup4 size is "<<sizeTup4<<endl;
+    
+    //测试tuple的遍历;
+    printTuple(tup4);
     return 0;
 }
