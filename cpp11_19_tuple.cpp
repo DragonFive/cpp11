@@ -10,6 +10,8 @@
 using namespace std;
 
 //下面是tuple的遍历方法
+//下面其实是可变模板参数函数以递归的方式展开参数包;
+//下面是遍历输出所有的元素;
 template<class Tuple,std::size_t N>
 struct TuplePrinter
 {
@@ -35,6 +37,30 @@ template<class... Args>
 void printTuple(tuple<Args...>& t)
 {
     TuplePrinter<decltype(t),sizeof ...(Args)>::print(t);
+}
+
+
+//下面是根据tuple元素获取其对应的索引位置;
+template<class Tuple,class T,int I>//T表示待找元素的类型;
+struct find_index
+{
+    static int find(Tuple &tup,T &&val)
+    {
+        return get<I-1>(tup)==val?I-1:find_index<tup,val,I-1>::find(tup,val);
+    }
+};
+struct find_index<Tuple,T,1>
+{
+    static int find(Tuple &tup,T&&val)
+    {
+        return get<0>(tup)==val?0:-1;
+    }
+};
+
+template<class T,class... Args>
+int tuple_find_index(tuple<Args...> & tup,T &&val)
+{
+    return find_index<decltype(tup),T,sizeof...(Args)>::find(tup,val);
 }
 
 
@@ -77,5 +103,8 @@ int main()
     
     //测试tuple的遍历;
     printTuple(tup4);
+
+    //测试tuple遍历的查询;
+    cout<<tuple_find_index(tup4,16)<<endl;
     return 0;
 }
