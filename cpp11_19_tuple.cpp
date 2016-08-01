@@ -62,7 +62,7 @@ struct find_index<Tuple,T,1>
 template<class T,class... Args>
 int tuple_find_index(tuple<Args...> const & tup, T &&val)
 {
-    return find_index<decltype(tup),T,sizeof...(Args)>::find(tup,std::forward<T>(val));
+    return find_index<decltype(tup),T,sizeof...(Args)>::find(tup,move(val));//这里的move和forward<T>一样 
 }
 
 
