@@ -36,7 +36,7 @@ int main(int argc, const char *argv[])
 			            }
 						
 						//下面获得当前线程的ID， 
-			            std::cout << std::this_thread::get_id()<< " finished computing..." << std::endl; 
+			            std::cout << std::this_thread::get_id()<< " finished computing..." << std::endl; //使用git_id的方法获得当前ID 
 			            return ret;
 			        }
 		        	,100000000
