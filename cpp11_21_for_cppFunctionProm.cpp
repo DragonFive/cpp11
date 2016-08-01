@@ -37,9 +37,9 @@ Collection map(Collection col,unop op)
 template <typename Collection,typename binop>
 auto reduce(Collection col,binop op) 
 {
-	Collection result(col.size());
-	std::transform(col.begin(),col.end()-1,col.begin()+1,result.begin(),op);
-	return *(result.begin()-1);
+	//Collection result(col.size());
+	std::transform(col.begin(),col.end()-1,col.begin()+1,col.begin()+1,op);
+	return *(col.end()-1);
 }
  
 
