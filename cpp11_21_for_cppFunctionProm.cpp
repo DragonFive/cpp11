@@ -34,6 +34,7 @@ Collection map(Collection col,unop op)
 }
 
 //transform实现reduce
+//这里的参数是复制过来的，所以在函数里面修改col容器,并不影响原始数据;
 template <typename Collection,typename binop>
 auto reduce(Collection col,binop op) 
 {
@@ -47,9 +48,9 @@ auto reduce(Collection col,binop op)
 template <typename Collection,typename binop>
 Collection zip(Collection fc,Collection sc,binop op) 
 {	
-	Collection result(fc.size());
-	std::transform(fc.begin(),fc.end(),sc.begin(),result.begin(),op);
-	return result;
+	//Collection result(fc.size());
+	std::transform(fc.begin(),fc.end(),sc.begin(),fc.begin(),op);
+	return fc;
 }
 
 // exists 表示判断集合中是否有某个元素符合条件; 
@@ -100,7 +101,8 @@ int main()
    auto reduceAdd = [] (int a, int b){ return a+b;};
   int bigNum = reduce(col,reduceAdd);
   cout<<"reduce add result:"<<bigNum<<endl;
- 
+  for_each(col,lambda_echo);
+    
   // 这里其实不是真正的zip函数，可以实现两个集合之间的对应元素的同操作; 
   println("running zip operation");
   auto zipAdd = [] (int a, int b){ return a+b;};
