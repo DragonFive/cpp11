@@ -2,28 +2,28 @@
 	> File Name: cpp11_18_tuple.cpp
 	> Author: DragonFive
 	> Mail: dragonfive2013@163.com
-	> Created Time: 2016å¹´07æœˆ31æ—¥ æ˜ŸæœŸæ—¥ 17æ—¶54åˆ†08ç§’
+	> Created Time: 2016Äê07ÔÂ31ÈÕ ĞÇÆÚÈÕ 17Ê±54·Ö08Ãë
  ************************************************************************/
 
 #include<iostream>
 #include<tuple>
 using namespace std;
 
-//ä¸‹é¢æ˜¯tupleçš„éå†æ–¹æ³•
-//ä¸‹é¢å…¶å®æ˜¯å¯å˜æ¨¡æ¿å‚æ•°å‡½æ•°ä»¥é€’å½’çš„æ–¹å¼å±•å¼€å‚æ•°åŒ…;
-//ä¸‹é¢æ˜¯éå†è¾“å‡ºæ‰€æœ‰çš„å…ƒç´ ;
+//ÏÂÃæÊÇtupleµÄ±éÀú·½·¨
+//ÏÂÃæÆäÊµÊÇ¿É±äÄ£°å²ÎÊıº¯ÊıÒÔµİ¹éµÄ·½Ê½Õ¹¿ª²ÎÊı°ü;
+//ÏÂÃæÊÇ±éÀúÊä³öËùÓĞµÄÔªËØ;
 template<class Tuple,std::size_t N>
 struct TuplePrinter
 {
     static void print(const Tuple&t)
     {
-        TuplePrinter<Tuple,N-1>::print(t);//ä½¿ç”¨é€’å½’çš„æ–¹æ³•,å…ˆå˜è„¸å‰N-1ä¸ª,è¿™é‡Œå› ä¸ºget<index>å…¶ä¸­åˆ°indexéœ€è¦æ˜¯å¸¸é‡,è€Œæ¨¡æ¿åœ¨ç¼–è¯‘æ—¶å¯ä»¥ç¡®å®š;
+        TuplePrinter<Tuple,N-1>::print(t);//Ê¹ÓÃµİ¹éµÄ·½·¨,ÏÈ±äÁ³Ç°N-1¸ö,ÕâÀïÒòÎªget<index>ÆäÖĞµ½indexĞèÒªÊÇ³£Á¿,¶øÄ£°åÔÚ±àÒëÊ±¿ÉÒÔÈ·¶¨;
         cout<<", "<<get<N-1>(t);
     }
 };
 
 template<class Tuple>
-struct TuplePrinter<Tuple,1>//å½“ç¬¬äºŒä¸ªå‚æ•°æ˜¯1æ—¶æ‰§è¡Œç€ä¸€ä¸ª;
+struct TuplePrinter<Tuple,1>//µ±µÚ¶ş¸ö²ÎÊıÊÇ1Ê±Ö´ĞĞ×ÅÒ»¸ö;
 {
     static void print(const Tuple&t)
     {
@@ -31,24 +31,26 @@ struct TuplePrinter<Tuple,1>//å½“ç¬¬äºŒä¸ªå‚æ•°æ˜¯1æ—¶æ‰§è¡Œç€ä¸€ä¸ª;
     }
 };
 
-//c++11ä¸­æ–°æ”¯æŒçš„å˜é•¿å‚æ•°æ¨¡å‹;è¡¨ç¤ºä¸ç®¡tupleå†…éƒ¨å‚æ•°ç±»å‹æœ‰å¤šå°‘ï¼Œéƒ½å¯ä»¥ç”¨è¿™ä¸ªå‡½æ•°æ¥è¿›è¡Œéå†;
+//c++11ÖĞĞÂÖ§³ÖµÄ±ä³¤²ÎÊıÄ£ĞÍ;±íÊ¾²»¹ÜtupleÄÚ²¿²ÎÊıÀàĞÍÓĞ¶àÉÙ£¬¶¼¿ÉÒÔÓÃÕâ¸öº¯ÊıÀ´½øĞĞ±éÀú;
 template<class... Args>
 
 void printTuple(tuple<Args...>& t)
 {
     TuplePrinter<decltype(t),sizeof ...(Args)>::print(t);
+    cout<<endl;
 }
 
 
-//ä¸‹é¢æ˜¯æ ¹æ®tupleå…ƒç´ è·å–å…¶å¯¹åº”çš„ç´¢å¼•ä½ç½®;
-template<class Tuple,class T,int I>//Tè¡¨ç¤ºå¾…æ‰¾å…ƒç´ çš„ç±»å‹;
+//ÏÂÃæÊÇ¸ù¾İtupleÔªËØ»ñÈ¡Æä¶ÔÓ¦µÄË÷ÒıÎ»ÖÃ;
+template<class Tuple,class T,int I>//T±íÊ¾´ıÕÒÔªËØµÄÀàĞÍ;
 struct find_index
 {
     static int find(Tuple &tup,T &&val)
     {
-        return get<I-1>(tup)==val?I-1:find_index<tup,val,I-1>::find(tup,val);
+        return get<I-1>(tup)==val?I-1:find_index<decltype(tup),T,I-1>::find(tup,std::forward<T>(val));
     }
 };
+template<class Tuple,class T>//T±íÊ¾´ıÕÒÔªËØµÄÀàĞÍ;
 struct find_index<Tuple,T,1>
 {
     static int find(Tuple &tup,T&&val)
@@ -58,9 +60,9 @@ struct find_index<Tuple,T,1>
 };
 
 template<class T,class... Args>
-int tuple_find_index(tuple<Args...> & tup,T &&val)
+int tuple_find_index(tuple<Args...> const & tup, T &&val)
 {
-    return find_index<decltype(tup),T,sizeof...(Args)>::find(tup,val);
+    return find_index<decltype(tup),T,sizeof...(Args)>::find(tup,std::forward<T>(val));
 }
 
 
@@ -74,17 +76,17 @@ int main()
     int intNum;
     double douNum;
     
-    //ä¸‹é¢æ˜¯tieå‡½æ•°ç”¨åœ¨å¼å­çš„å·¦è¾¹;åªæ˜¯å¤åˆ¶
+    //ÏÂÃæÊÇtieº¯ÊıÓÃÔÚÊ½×ÓµÄ×ó±ß;Ö»ÊÇ¸´ÖÆ
     tie(str,intNum,douNum)=tup;
     cout<<str<<" "<<intNum<<" "<<douNum<<endl;
     intNum = 12;
     get<2>(tup)=2.4;
     cout<<get<2>(tup)<<" "<<douNum<<endl;
 
-    //ä¸‹é¢æ˜¯tieå‡½æ•°ç”¨åœ¨å¼å­çš„å³è¾¹;æ˜¯å¼•ç”¨
+    //ÏÂÃæÊÇtieº¯ÊıÓÃÔÚÊ½×ÓµÄÓÒ±ß;ÊÇÒıÓÃ
     
     
-    auto tup2 = std::tie(str,intNum,douNum);//è¿™é‡Œtup2å®é™…åˆ°ç±»å‹ä¸º: std::tuple<int&,string&,double&>;
+    auto tup2 = std::tie(str,intNum,douNum);//ÕâÀïtup2Êµ¼Êµ½ÀàĞÍÎª: std::tuple<int&,string&,double&>;
     cout<<get<0>(tup2)<<" "<<get<1>(tup2)<<" "<<get<2>(tup2)<<endl;
     intNum = 14;
     get<2>(tup2)=3.4;
@@ -94,17 +96,19 @@ int main()
     get<1>(tup2)=16;
     cout<<intNum<<endl;
     //tuple_cat
-    tuple<int,string> tup3 = make_pair<int,string>(18,"hello");//tupleæ˜¯å¯¹pairçš„æ³›åŒ–;
+    tuple<int,string> tup3 = make_pair<int,string>(18,"hello");//tupleÊÇ¶ÔpairµÄ·º»¯;
     auto tup4 = tuple_cat(tup2,tup3,tup2);
 
-    //è·å¾—tupleä¸­å…ƒç´ çš„ä¸ªæ•°;
+    //»ñµÃtupleÖĞÔªËØµÄ¸öÊı;
     int sizeTup4 = tuple_size<decltype(tup4)>::value;
     cout<<"tup4 size is "<<sizeTup4<<endl;
     
-    //æµ‹è¯•tupleçš„éå†;
+    //²âÊÔtupleµÄ±éÀú;
     printTuple(tup4);
 
-    //æµ‹è¯•tupleéå†çš„æŸ¥è¯¢;
-    cout<<tuple_find_index(tup4,16)<<endl;
+    //²âÊÔtuple±éÀúµÄ²éÑ¯;
+    auto tup5=make_tuple(13,16,19);
+    
+    cout<<"find 16 at:"<<tuple_find_index(tup5,16)<<endl;
     return 0;
 }
