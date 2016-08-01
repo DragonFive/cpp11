@@ -18,20 +18,25 @@ using namespace std;
 
 int main()
 {
-    thread t1([]()
+	mutex coutlock; 
+    thread t1([&coutlock]()
     {
-        std::this_thread::sleep_for (chrono::seconds(2)); //线程停止10秒 
+        std::this_thread::sleep_for (chrono::seconds(1)); //线程停止10秒 
         for(int i=0;i<10;i++) 
          {     
+         	coutlock.lock();
             cout <<  "In t1 ThreadID : " << std::this_thread::get_id() << ":" << i << endl;     //this_thread::get_id获取当前线程的id ,
+            coutlock.unlock();
         } 
     } );
-    thread t2([]() 
+    thread t2([&coutlock]() 
     {          
         std::this_thread::sleep_for (chrono::seconds(1)); 
         for(int i=0;i<10;i++) 
         {         
-            cout <<  "In t2 ThreadID : " << std::this_thread::get_id() << ":" << i << endl;         
+        	coutlock.lock();
+            cout <<  "In t2 ThreadID : " << std::this_thread::get_id() << ":" << i << endl;   
+			coutlock.unlock();      
         } 
     } ); 
     t1.join();     //等待线程t1结束后往下运行 
