@@ -24,8 +24,9 @@ int cargo = 0;  //这是消费者和生产者共享的变量，应该在关键区(unique_lock的作用域
 
 void consumer(int id)
 {
+	//std::this_thread::yield();
 	std::unique_lock<std::mutex> lck(mtx);	//自此进入关键区，直到lck被释放; 
-	if (cargo==0)  //不知道这里换成while会怎样; 
+	if (cargo==0)  							//不能用while否则会卡住; 
 		cv.wait(lck);						//wait之后lck被释放，线程阻塞，当线程被唤醒后，lck重新被锁住; 
 	
 	std::cout<<"consumer: "<<id<<" got the cargo: "<<cargo<<std::endl;
@@ -35,6 +36,7 @@ void consumer(int id)
 
 void producer(int id)
 {
+	//std::this_thread::yield();
 	std::unique_lock<std::mutex> lck(mtx);	//因为这里修改了共享的变量cargo;所以要加锁;
 	cargo=id;
 	cv.notify_one(); 
@@ -43,16 +45,18 @@ void producer(int id)
 
 int main()
 {
-	std::thread consumers[10], producers[10];//10个生产者,10个消费者;
+	const int maxThread = 100;
+	std::thread consumers[maxThread], producers[maxThread];//maxThread个生产者,maxThread个消费者;
 	
-	for(int i=0;i<10;i++)
+	for(int i=0;i<maxThread;i++)
 	{
-		consumers[i] = std::thread(consumer,i+1);
 		producers[i] = std::thread(producer,i+1);
+		consumers[i] = std::thread(consumer,i+1);
+		
 	} 
 
 	//等待各个子线程运行完;
-	for(int i=0;i<10;i++)
+	for(int i=0;i<maxThread;i++)
 	{
 		producers[i].join();
 		consumers[i].join();
