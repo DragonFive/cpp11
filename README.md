@@ -24,7 +24,9 @@ cout << n << endl;
 ```
 ## 参考资料
 [Lambda表达式 | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/18.html)
+
 [C++11 lambda表达式 - KingsLanding ](http://www.cnblogs.com/zhuyp1015/archive/2012/04/08/2438176.html)
+
 [用作模板参数的局部类型 | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/21.html)
 
 
@@ -45,6 +47,7 @@ weak_ptr可以保存一个“弱引用”，指向一个已经用shared_ptr进�
 
 ## 参考资料
 [C++11中的智能指针](http://my.oschina.net/hevakelcj/blog/465978)
+
 [【c++11FAQ】unique_ptr](https://wizardforcel.gitbooks.io/cpp-11-faq/content/12.html)
 
 
@@ -275,6 +278,7 @@ std::cv_status 枚举类型取值
 
 cv_status::no_timeout 表示	wait_for 或者 wait_until 没有超时，即在规定的时间段内线程收到了通知。
 cv_status::timeout 表示	wait_for 或者 wait_until 超时。
+代码在：[cpp11_23_wait_for.cpp](https://github.com/DragonFive/cpp11/blob/master/cpp11_23_wait_for.cpp)
 
 ## 参考资料 
 
@@ -421,6 +425,7 @@ R"***("quoted string containing the usual terminator (")")***"
 ## 参考资料
 
 [原生字符串标识R | C++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/52.html)
+
 [c++原始字符串](http://www.cnblogs.com/lzxskjo/p/4896164.html)
 
 # 右值引用与移动构造函数
@@ -432,7 +437,9 @@ ove(x) 意味着“你可以把x当做一个右值”。
 
 ## 参考资料
 [C++11尝鲜：右值引用和转发型引用 ](http://blog.csdn.net/zwvista/article/details/12306283#t7)
+
 [右值引用 | c++11 FAQ 中文版](https://wizardforcel.gitbooks.io/cpp-11-faq/content/47.html)
+
 [cpp11 sniper](https://github.com/daniel-j-h/cpp11-snippets/blob/master/src/move.cpp)
 
 
@@ -479,6 +486,7 @@ int main()
 [C++11 用户自定义字面值](http://www.cnblogs.com/lzxskjo/p/5198947.html)
 
 [C++11 新特性：用户定义字面量](https://www.devbean.net/2012/05/cpp11-literals/)
+
 [【c++11FAQ】用户定义数据标识 ](https://wizardforcel.gitbooks.io/cpp-11-faq/content/13.html)
 
 # 随机数的产生
@@ -504,6 +512,7 @@ int main()
 [ 【C++11】随机数函数库random](http://blog.csdn.net/akonlookie/article/details/8223525)
 
 [[C++11]C++11带来的随机数生成器](http://www.cnblogs.com/egmkang/archive/2012/09/06/2673253.html)
+
 [【c++11FAQ】随机数的产生](https://wizardforcel.gitbooks.io/cpp-11-faq/content/74.html)
 
 [c++一般意义上的随机数生成](http://blog.sina.com.cn/s/blog_79ab4be10100uzrj.html)
