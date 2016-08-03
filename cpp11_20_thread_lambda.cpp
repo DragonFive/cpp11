@@ -15,7 +15,20 @@
 #include <iostream>
 #include <mutex>
 using namespace std; 
+struct myData
+{
+    int data = 0;
+    myData(int m):data{m}{}
+    myData(myData & m):data{m.data}
+    {
+        cout<<"构造函数被调用"<<endl;
+    }
+};
 
+void testRef(myData & trans)
+{
+    cout<<"收到的值是"<<trans.data<<endl;
+}
 int main()
 {
 	mutex coutlock; 
@@ -42,6 +55,13 @@ int main()
     t1.join();     //等待线程t1结束后往下运行 
     t2.join();     
     cout<<"Main Thread:"<<std::this_thread::get_id()  <<endl;
+    
+    //下面测试传递参数时候值传递与引用传递;
+    myData dthrans(100);
+    thread t3(testRef,std::ref(dthrans));//这句话和下面这句话等同,在传递引用的时候一定要使用这个ref呀;
+    //thread t3(bind(testRef,ref(dthrans)));
+    t3.join();
+    
     return 0;
 
 }
