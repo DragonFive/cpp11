@@ -219,7 +219,26 @@ int main()
     std::cout << res1 << " " << res2 << ‘\n’;
 }
 ```
+## mutex 
+**lock()**，调用线程将锁住该互斥量。线程调用该函数会发生下面 3 种情况：
+1. 如果该互斥量当前没有被锁住，则调用线程将该互斥量锁住，直到调用 unlock之前，该线程一直拥有该锁。
+2. 如果当前互斥量被其他线程锁住，则当前的调用线程被**阻塞住**。
+3. 如果当前互斥量被当前调用线程锁住，则会产生死锁(deadlock)。
+
+**unlock()**， 解锁，释放对互斥量的所有权。
+
+**try_lock()**，尝试锁住互斥量，如果互斥量被其他线程占有，则当前线程也不会被阻塞。线程调用该函数也会出现下面 3 种情况，
+
+1. 如果当前互斥量没有被其他线程占有，则该线程锁住互斥量，直到该线程调用 unlock 释放互斥量。
+2. 如果当前互斥量被其他线程锁住，则当前调用线程返回 false，而**并不会被阻塞掉**。
+3. 如果当前互斥量被当前调用线程锁住，则会产生死锁(deadlock)。
+
+[volatile关键字](http://www.cnblogs.com/Chase/archive/2010/07/05/1771700.html)
+
+
 ## condition_variable
+condition_variable与mutex的区别是: mutex 里面包的是关键区,互斥访问的，别人unlock后自动唤醒，lock与unlock是成对存在的。而condition_variable是线程之间同步的顺序控制,一个线程wait另一个线程运行完厚notify之后该线程才能继续运行。
+
 条件变量用于线程间的同步通信。```<condition_variable >``` 头文件主要包含了与条件变量相关的类和函数。与条件变量相关的类包括 std::condition_variable和 std::condition_variable_any，还有枚举类型std::cv_status另外还包括函数 std::notify_all_at_thread_exit()。
 
 当 std::condition_variable 对象的某个 wait 函数被调用的时候，它使用 std::unique_lock(封装 std::mutex) 来锁住当前线程。当前线程会一直被阻塞，直到另外一个线程在相同的 std::condition_variable 对象上调用了 notification 函数来唤醒当前线程。
