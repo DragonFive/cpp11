@@ -33,9 +33,10 @@ int main()
         threads[i] = std::thread(attempt_10k_increases);
     }
 
-    for(int i=0;i<10;i++)
+    //for(int i=0;i<10;i++)
+    for(auto th:threads)
     {
-        threads[i].join();
+        th.join();
     }
     std::cout<<counter<<"次增加counter"<<std::endl;
     return 0;
